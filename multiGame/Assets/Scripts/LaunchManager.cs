@@ -11,9 +11,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
-
-        //ActiveLoginPanel();
-        //PhotonNetwork.AutomaticallySyncScene = true;        
+        
     }
 
     // Update is called once per frame
@@ -26,7 +24,21 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("Photon'a bağlandınız.");
-        OdaOlustur();
+        print(PhotonNetwork.CountOfRooms);
+        if (PhotonNetwork.CountOfRooms > 0)
+        {
+            print("Evet oda var");
+            PhotonNetwork.JoinRandomRoom();
+        }
+
+        if (PhotonNetwork.CountOfRooms <= 0)
+        {
+            RoomOptions roomCount = new RoomOptions();
+            roomCount.MaxPlayers = (byte)int.Parse("20");
+            PhotonNetwork.CreateRoom("A", roomCount);
+        }
+
+        //OdaOlustur();
 
         //Debug.Log("Photona Bağlanıldı.");
         //Debug.Log(PhotonNetwork.NickName);
